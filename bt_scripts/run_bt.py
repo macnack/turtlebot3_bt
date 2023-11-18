@@ -58,16 +58,14 @@ def create_root() -> py_trees.behaviour.Behaviour:
         condition=check_distance_in_front,
         blackboard_keys={"scan"}
     )
-    failure_selector = py_trees.composites.Selector(name="FailureSelector")
+    failure_selector = py_trees.composites.Selector(name="FailureSelector", memory=False)
     failure_selector.add_child(py_trees.behaviours.Failure(name="Failure"))
+    failure_selector.add_child(distance_check)
     failure_selector.add_child(rotation)
     # Modyfikacja drzewa tak, żeby było możliwe realizowanie założeń z instrukcji.
     root.add_child(laser2BB)
-    root.add_child(rotation)
-    root.add_child(py_trees.decorators.Selector(
-        name="DistanceCheckSelector",
-        children=[distance_check, failure_selector]
-    ))
+    # root.add_child(rotation)
+    root.add_child(failure_selector)
 
     # Zwracanie korzenia i połączonych do niego dzieci
     return root
