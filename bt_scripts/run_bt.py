@@ -12,6 +12,7 @@ import sensor_msgs.msg as sensor_msgs
 def create_root() -> py_trees.behaviour.Behaviour:
     # Kompozycja typu Parallel, będzie korzeniem naszego drzewa.
     # Wszyskie połączone do niego dzieci będą wykonywane równocześnie
+    py_trees.blackboard.Blackboard().set('/scan', [])
     root = py_trees.composites.Parallel(
         name="Turtlebot3 Behaviour Tree",
         policy=py_trees.common.ParallelPolicy.SuccessOnAll(
